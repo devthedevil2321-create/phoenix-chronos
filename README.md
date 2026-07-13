@@ -10,7 +10,7 @@
 
 ---
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Termux-green)
 ![Status](https://img.shields.io/badge/status-Pre--Alpha-orange)
 ![Python](https://img.shields.io/badge/python-3.12+-blue)
