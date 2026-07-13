@@ -207,9 +207,7 @@ If you'd like to contribute, please open an issue before starting major changes 
 
 # 📄 License
 
-MIT License
-
----
+Apache 2.0 
 
 # ⚠️ Project Status
 
