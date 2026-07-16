@@ -2,227 +2,237 @@
 
 # 🔥 Phoenix Chronos
 
-### The Open-Source Checkpoint & Replay Engine for Developers
+### *The Open-Source Checkpoint & Replay Engine for Developers*
 
-*"Checkpoint your development environment. Restore it when things go wrong."*
+*"Git tracks your code. Phoenix Chronos tracks your environment."*
 
-🚧 **Early Development** — Building the future of reproducible development environments.
+[![GitHub Stars](https://img.shields.io/badge/GitHub-Stars-yellow?style=for-the-badge&logo=github)](https://github.com)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=for-the-badge)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Termux%20%7C%20macOS-green?style=for-the-badge)](https://github.com)
+[![Python](https://img.shields.io/badge/python-3.12+-blue?style=for-the-badge&logo=python)](https://python.org)
 
 ---
 
-![License](https://img.shields.io/badge/license-Apache2.0-blue.svg)
-![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Termux-green)
-![Status](https://img.shields.io/badge/status-Pre--Alpha-orange)
-![Python](https://img.shields.io/badge/python-3.12+-blue)
+**Every developer knows this nightmare:**
+*"Everything worked yesterday. Now, a dependency updated, an environment variable changed, or a config was overwritten, and the build is broken. I've spent 4 hours trying to get back to my working state."*
+
+**Phoenix Chronos solves this forever.** It takes zero-friction, lightweight development environment checkpoints, allowing you to restore your exact files, dependencies, environment variables, and git state in seconds.
+
+[🚀 Quick Start](#-quick-start) • [✨ Key Features](#-key-features) • [⚙️ Architecture](#️-architecture) • [📖 CLI Usage](#-cli-usage) • [🤝 Contributing](#-contributing)
 
 </div>
 
 ---
 
-# 🚀 Why Phoenix Chronos?
+## ⚡ What does Chronos Track?
 
-Every developer has experienced this.
-
-> "Everything worked yesterday."
-
-Then suddenly:
-
-- ❌ A package update breaks the project.
-- ❌ An environment variable changes.
-- ❌ A dependency conflict appears.
-- ❌ A toolchain upgrade causes failures.
-- ❌ A configuration file is accidentally modified.
-- ❌ Hours are spent trying to return to the last working state.
-
-Git remembers your code.
-
-**Phoenix Chronos aims to remember your development environment.**
+```
+📦 Phoenix Chronos Checkpoint
+├── 📁 Project Files (Excluding ignored build/venv artifacts)
+├── 📦 Package Dependencies (Pip, NPM, Cargo, Go)
+├── ⚙️ Environment Variables (PATH, GOROOT, JAVA_HOME, and custom rules)
+└── 🐙 Git Repository State (Commit hash, branch name, working tree status)
+```
 
 ---
 
-# 🎯 Vision
+## 🚀 Quick Start
 
-Phoenix Chronos is an open-source project exploring a new idea:
+### 1. Installation
 
-> **Checkpoint your development environment and restore a reproducible working state when something goes wrong.**
-
-Instead of only tracking source code, Chronos aims to capture the broader development context, such as:
-
-- Project files
-- Package versions
-- Environment variables
-- Git state
-- Build outputs
-- Test results
-- Development services
-- Terminal activity (configurable)
-
-The goal is to make recovery from common development mistakes faster and more reliable.
-
----
-
-# ✨ Planned Features
-
-## 📸 Development Checkpoints
+Install Phoenix Chronos directly from source:
 
 ```bash
-chronos checkpoint
+git clone https://github.com/yourusername/phoenix-chronos.git
+cd phoenix-chronos
+pip install -e .
 ```
-
-Save a snapshot of your development state.
 
 ---
 
-## 🔄 Restore
+### 2. Initialize Chronos in your project
+
+Run `chronos init` inside any directory to set up environment tracking. This creates a lightweight `.chronos` database and configuration file.
 
 ```bash
-chronos restore latest
+$ chronos init
 ```
-
-Restore the latest reproducible checkpoint.
+*Output:*
+> `Initialized empty Chronos repository in /path/to/project/.chronos`
 
 ---
 
-## 📜 Timeline
+### 3. Create a Checkpoint
+
+Whenever your project is in a working state, take a snapshot!
 
 ```bash
-chronos timeline
+$ chronos checkpoint -m "Working state with requests library added"
 ```
-
-Browse checkpoints and development history.
+*Output:*
+> `Successfully created checkpoint: cp_20231024153022_b3d4f109`
 
 ---
 
-## 🔍 Compare
+### 4. Check Status
+
+Chronos monitors files, environment variables, and packages in real-time, highlighting exact deviations from your last checkpoint.
 
 ```bash
-chronos diff checkpoint-1 checkpoint-2
+$ chronos status
 ```
+*Output:*
+```text
+🔍 Phoenix Chronos - Dev Environment Status
+==========================================
+Latest Checkpoint: cp_20231024153022_b3d4f109 ("Working state with requests library added")
+Git State: branch=main commit=f4a2b91
+------------------------------------------
 
-See what changed between two checkpoints.
+📁 File Status:
+  ~ [Modified]  src/main.py
+  + [Untracked] test_new_feature.py
 
----
+📦 Package Status:
+  + [pip] pytest==7.4.3
 
-## 🧪 Verification
-
-Chronos aims to verify restored environments by checking things like:
-
-- Build success
-- Test results
-- Toolchain versions
-- Dependency consistency
-
----
-
-## 📦 Package Tracking
-
-Planned support includes:
-
-- pip
-- npm
-- cargo
-- go
-- Maven
-- Gradle
-- apt
-- pkg (Termux)
-
----
-
-## 🐧 Platform Support
-
-### Planned
-
-- Linux
-- Termux (Android)
-
-### Future Exploration
-
-- macOS
-
----
-
-# 🏗️ Architecture
-
-```
-CLI
-    │
-    ▼
-Chronos Daemon
-    │
- ┌──────────────┐
- │ Event Log    │
- │ Snapshots    │
- │ Metadata     │
- └──────────────┘
-    │
-    ▼
-Restore Planner
-    │
-    ▼
-Verification
+⚙️ Environment Variables Status:
+  ~ PATH (Checkpoint: /usr/bin -> Local: /tmp/untrusted/bin:/usr/bin)
 ```
 
 ---
 
-# 🛣️ Roadmap
+### 5. Compare History
 
-## Phase 1
+See what changed between two different checkpoints:
 
-- CLI
-- Configuration
-- SQLite metadata
-- Snapshot engine
-
-## Phase 2
-
-- Git integration
-- Package manager adapters
-- Environment tracking
-- Timeline
-
-## Phase 3
-
-- Restore planner
-- Verification
-- Plugin system
-
-## Phase 4
-
-- Performance improvements
-- More ecosystem integrations
-- Community plugins
+```bash
+$ chronos diff cp_20231024153022_b3d4f109 cp_20231024164511_a9f23d41
+```
 
 ---
 
-# 🤝 Contributing
+### 6. Replay & Restore
 
-Contributions are welcome.
+Did a dependency break your app? Easily restore your exact files to a previous checkpoint. Chronos will automatically output a **Restore Plan** to guide your package and environment alignment!
 
-Ideas, bug reports, documentation improvements, and code reviews all help improve the project.
+```bash
+$ chronos restore cp_20231024153022_b3d4f109
+```
+*Output:*
+```text
+📋 PHOENIX CHRONOS RESTORE PLAN
+================================
+Target Checkpoint: cp_20231024153022_b3d4f109
+Message:           "Working state with requests library added"
+Timestamp:         2023-10-24 15:30:22
+--------------------------------
 
-If you'd like to contribute, please open an issue before starting major changes so we can discuss the design.
+📁 Files to update:
+  ~ [Modified] src/main.py
+  - [Delete]   test_new_feature.py
+
+📦 Package Alignment Actions Required:
+  [Install] pip: requests==2.31.0
+
+⚙️ Environment Variables Alignment Required:
+  [Update] PATH (/tmp/untrusted/bin:/usr/bin -> /usr/bin)
+
+Successfully restored workspace files to checkpoint: cp_20231024153022_b3d4f109
+Please align your system packages and environment variables as printed above.
+```
 
 ---
 
-# 📄 License
+## 🛠️ Configuration (`.chronos/config.json`)
 
-Apache 2.0 
+Phoenix Chronos is highly customizable. After running `chronos init`, you can customize `.chronos/config.json`:
 
-# ⚠️ Project Status
+```json
+{
+    "include": [
+        "**/*"
+    ],
+    "exclude": [
+        "**/.git/**",
+        "**/.chronos/**",
+        "**/node_modules/**",
+        "**/__pycache__/**",
+        "**/*.pyc",
+        "**/.venv/**"
+    ],
+    "environment_variables": [
+        "PATH",
+        "PYTHONPATH",
+        "NODE_ENV"
+    ],
+    "commands": {
+        "pre_checkpoint": "pytest tests/",
+        "post_checkpoint": "echo 'Checkpoint taken successfully!'",
+        "pre_restore": "",
+        "post_restore": ""
+    }
+}
+```
 
-Phoenix Chronos is currently experimental.
-
-The goal is to explore new ways of making development environments easier to understand, reproduce, and recover.
-
-Features described above represent the project's direction and roadmap. Functionality will be added incrementally as the project evolves.
+- **pre_checkpoint**: Run verification commands (e.g. tests) that must pass before taking a checkpoint.
+- **post_checkpoint**: Fire off custom webhooks or log events.
 
 ---
 
-<div align="center">
+## 🏗️ Architecture
 
-## ⭐ Star the project if you find the vision interesting.
+```
+                       ┌─────────────────────────┐
+                       │       Chronos CLI       │
+                       └────────────┬────────────┘
+                                    │
+                                    ▼
+                       ┌─────────────────────────┐
+                       │     Restore Planner     │
+                       └────────────┬────────────┘
+                                    │
+       ┌────────────────────────────┼────────────────────────────┐
+       ▼                            ▼                            ▼
+┌──────────────┐             ┌──────────────┐             ┌──────────────┐
+│  SQLite DB   │             │ Snapshot Zip │             │ Env Adapters │
+│ (Metadata)   │             │  (Archives)  │             │ (Pip/NPM/Go) │
+└──────────────┘             └──────────────┘             └──────────────┘
+```
 
-Every contribution helps move the project forward.
+---
 
-</div>
+## 🕒 Timeline
+
+Easily browse your development checkpoints:
+
+```bash
+$ chronos timeline
+```
+```text
+🕒 Phoenix Chronos - Development History Timeline
+==================================================
+ 🔥 (latest)  ID: cp_20231024164511_a9f23d41
+ │   Time:    2023-10-24 16:45:11
+ │   Git:      [main] (f4a2b91)
+ │   Message: Broken experiment with experimental packages
+ │
+ ●  ID: cp_20231024153022_b3d4f109
+     Time:    2023-10-24 15:30:22
+     Git:      [main] (e1c9a82)
+     Message: Working state with requests library added
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are extremely welcome! If you'd like to help build the future of reproducible development environments, please feel free to submit issues, pull requests, or suggestions.
+
+Let's make local development reliable and fun! 🚀
+
+---
+
+## 📄 License
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
