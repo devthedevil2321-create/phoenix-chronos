@@ -43,7 +43,7 @@
 Install Phoenix Chronos directly from source:
 
 ```bash
-git clone https://github.com/yourusername/phoenix-chronos.git
+git clone https://github.com/devthedevil2321-create/phoenix-chronos.git
 cd phoenix-chronos
 pip install -e .
 ```
