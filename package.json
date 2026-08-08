@@ -1,0 +1,16 @@
+{
+  "name": "ghostlink",
+  "version": "1.0.0",
+  "description": "GhostLink — God-Mode, Military-Grade Private Chat",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node tests/ghostlink_test.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "author": "Dev",
+  "license": "MIT"
+}
