@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GhostLink // God-Mode Private Chat</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for professional tactical icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="h-full flex flex-col font-mono text-xs select-none">
+
+    <!-- TOP HEADER BAR -->
+    <header class="border-b border-emerald-900/40 bg-slate-900/80 backdrop-blur px-6 py-3 flex justify-between items-center shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" id="status-dot"></div>
+            <h1 class="text-emerald-400 font-bold tracking-wider text-sm flex items-center gap-2">
+                <i class="fa-solid fa-ghost"></i> GHOSTLINK // PRIVATE.CHAT
+            </h1>
+            <span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded font-bold uppercase tracking-widest">
+                God-Mode Active
+            </span>
+        </div>
+        <div class="flex items-center gap-6 text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase tracking-widest text-slate-500">Security Tier:</span>
+                <span class="text-emerald-400 font-bold">AES-256-GCM / X3DH / RATCHET</span>
+            </div>
+            <button id="btn-self-destruct" class="bg-red-950/40 hover:bg-red-900/60 border border-red-800 text-red-400 font-bold uppercase tracking-wider px-3 py-1.5 rounded transition flex items-center gap-2">
+                <i class="fa-solid fa-radiation"></i> Self-Destruct
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN TACTICAL WORKSPACE -->
+    <main class="flex-1 flex overflow-hidden">
+
+        <!-- LEFT CONTROL PANEL (Keys, Signaling & Invitations) -->
+        <section class="w-80 border-r border-slate-900 bg-slate-950/80 p-5 flex flex-col gap-6 overflow-y-auto shrink-0">
+
+            <!-- MY NODE IDENTIFICATION -->
+            <div class="border border-slate-900 bg-slate-900/20 rounded-lg p-4 flex flex-col gap-3">
+                <h2 class="text-emerald-400 font-bold uppercase tracking-widest text-[10px] border-b border-slate-900 pb-2 flex justify-between items-center">
+                    <span><i class="fa-solid fa-microchip mr-1"></i> My Cryptographic Identity</span>
+                    <span id="node-online-status" class="text-[9px] text-yellow-500">offline</span>
+                </h2>
+                <div class="flex flex-col gap-2">
+                    <label class="text-slate-500 text-[10px] uppercase">Identity Key Fingerprint:</label>
+                    <div class="bg-slate-900 border border-slate-800 p-2 rounded text-[10px] text-slate-300 break-all select-all font-mono" id="my-fingerprint">
+                        Generating cryptographic node...
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-slate-500 text-[10px] uppercase">My Ephemeral Session Token:</label>
+                    <div class="flex gap-2">
+                        <input type="text" readonly id="my-session-token" class="bg-slate-900 border border-slate-800 px-2 py-1.5 rounded text-[10px] text-slate-300 font-mono w-full text-center" value="Generating...">
+                        <button id="btn-copy-token" class="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-emerald-400 px-3 py-1 rounded transition">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INVITATION PANEL -->
+            <div class="border border-slate-900 bg-slate-900/20 rounded-lg p-4 flex flex-col gap-4">
+                <h2 class="text-emerald-400 font-bold uppercase tracking-widest text-[10px] border-b border-slate-900 pb-2">
+                    <i class="fa-solid fa-ticket mr-1"></i> Private Invitations
+                </h2>
+
+                <!-- Create Invitation -->
+                <div class="flex flex-col gap-2">
+                    <label class="text-slate-500 text-[10px] uppercase">Create Private Code:</label>
+                    <button id="btn-create-invitation" class="w-full bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-800 text-emerald-400 font-bold uppercase py-2 rounded transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-plus"></i> Generate Invitation
+                    </button>
+                    <div id="div-invitation-code" class="hidden flex flex-col gap-1.5 mt-2">
+                        <div class="flex gap-2">
+                            <input type="text" readonly id="input-invitation-code" class="bg-slate-900 border border-slate-800 text-center text-emerald-300 font-bold py-1.5 rounded w-full text-[10px]">
+                            <button id="btn-copy-invitation" class="bg-slate-900 border border-slate-800 hover:bg-slate-800 text-emerald-400 px-3 py-1 rounded transition">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <span class="text-[9px] text-slate-500 text-center italic">Give this code to a friend to connect.</span>
+                    </div>
+                </div>
+
+                <!-- Accept Invitation -->
+                <div class="flex flex-col gap-2 pt-2 border-t border-slate-900">
+                    <label class="text-slate-500 text-[10px] uppercase">Accept Friend's Code:</label>
+                    <input type="text" id="input-accept-code" placeholder="ENTER INVITATION CODE..." class="bg-slate-900 border border-slate-800 text-center uppercase py-2 rounded w-full text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-800 font-bold tracking-wider text-[10px]">
+                    <button id="btn-accept-invitation" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-300 font-bold uppercase py-2 rounded transition flex items-center justify-center gap-2 mt-1">
+                        <i class="fa-solid fa-circle-check"></i> Accept Invitation
+                    </button>
+                </div>
+            </div>
+
+            <!-- HARDENED DEFAULTS STATUS -->
+            <div class="border border-slate-900 bg-slate-900/20 rounded-lg p-4 flex flex-col gap-2 mt-auto text-[10px]">
+                <h3 class="text-slate-500 uppercase tracking-widest font-bold text-[9px] border-b border-slate-900 pb-1.5 mb-1">
+                    <i class="fa-solid fa-shield-halved"></i> Active Hardened Policies
+                </h3>
+                <div class="flex justify-between items-center text-emerald-500">
+                    <span><i class="fa-solid fa-lock mr-1 text-[9px]"></i> Web Crypto CSPRNG</span>
+                    <span class="text-[9px] bg-emerald-950 px-1.5 py-0.5 rounded font-bold border border-emerald-800 uppercase text-[8px]">Active</span>
+                </div>
+                <div class="flex justify-between items-center text-emerald-500">
+                    <span><i class="fa-solid fa-server mr-1 text-[9px]"></i> Sealed Sender Routing</span>
+                    <span class="text-[9px] bg-emerald-950 px-1.5 py-0.5 rounded font-bold border border-emerald-800 uppercase text-[8px]">Enforced</span>
+                </div>
+                <div class="flex justify-between items-center text-emerald-500">
+                    <span><i class="fa-solid fa-route mr-1 text-[9px]"></i> Relay-Only Privacy (TURN)</span>
+                    <span class="text-[9px] bg-emerald-950 px-1.5 py-0.5 rounded font-bold border border-emerald-800 uppercase text-[8px]">Active</span>
+                </div>
+                <div class="flex justify-between items-center text-emerald-500">
+                    <span><i class="fa-solid fa-broom mr-1 text-[9px]"></i> Zero DB Persistence</span>
+                    <span class="text-[9px] bg-emerald-950 px-1.5 py-0.5 rounded font-bold border border-emerald-800 uppercase text-[8px]">Wipe on Exit</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT WORKSPACE (Active Chat & Trust Panel) -->
+        <section class="flex-1 flex flex-col bg-slate-950 overflow-hidden relative">
+
+            <!-- INTRO WELCOME PANEL (When no chat is active) -->
+            <div id="intro-panel" class="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/95 z-10 p-8 text-center">
+                <div class="max-w-md flex flex-col items-center gap-6">
+                    <div class="w-16 h-16 rounded-full bg-slate-900 border border-emerald-900/40 flex items-center justify-center text-emerald-400 text-3xl shadow-[0_0_20px_rgba(16,185,129,0.05)]">
+                        <i class="fa-solid fa-ghost"></i>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <h2 class="text-lg font-bold text-slate-100 uppercase tracking-widest">Awaiting Secure Initialization</h2>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">
+                            No active cryptographic handshake has been established. Share your single-use invitation code or enter your peer's invitation code to establish a Double Ratchet end-to-end encrypted session.
+                        </p>
+                    </div>
+                    <div class="border border-slate-900 bg-slate-900/20 p-4 rounded-lg text-left text-[10px] text-slate-500 flex flex-col gap-2">
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> No accounts, passwords, or data on any servers.</div>
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Local-only private key pairs.</div>
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500"></i> Strict, ongoing key-rotation with absolute forward secrecy.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAT NODE STATUS HEADER (Active during session) -->
+            <div class="border-b border-slate-900 bg-slate-900/30 px-6 py-4 flex justify-between items-center shrink-0">
+                <div class="flex items-center gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Secure Peer Session:</span>
+                            <span id="active-peer-id" class="text-emerald-400 font-bold font-mono">none</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[9px] text-slate-500 uppercase">Handshake ID:</span>
+                            <span id="active-handshake-hash" class="text-slate-400 text-[9px] font-mono">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRUST VERIFICATION PANEL -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-slate-900 border border-slate-800 rounded px-3 py-1 flex items-center gap-2">
+                        <span class="text-[9px] text-slate-500 uppercase">Trust Status:</span>
+                        <span id="trust-badge" class="text-[10px] text-red-400 font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-triangle-exclamation"></i> TOFU Unverified
+                        </span>
+                    </div>
+                    <button id="btn-verify-trust" class="bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-800 text-emerald-400 font-bold uppercase px-3 py-1.5 rounded transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-qrcode"></i> Verify Trust
+                    </button>
+                </div>
+            </div>
+
+            <!-- CHAT MESSAGES LOG -->
+            <div id="messages-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <!-- Dynamically populated secure messages -->
+            </div>
+
+            <!-- DISAPPEARING MESSAGES WARNING / STATE BAR -->
+            <div class="bg-slate-950 border-t border-slate-900/60 px-6 py-2 flex justify-between items-center text-[10px] text-slate-500 shrink-0">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-hourglass-half text-yellow-500"></i>
+                    <span>Disappearing Messages: <strong class="text-slate-400" id="disappearing-time-display">1 minute</strong></span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="btn-set-disappear-1m" class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 hover:border-slate-700 text-[9px] text-slate-300 font-bold">1m</button>
+                    <button id="btn-set-disappear-5m" class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 hover:border-slate-700 text-[9px] text-slate-300 font-bold">5m</button>
+                    <button id="btn-set-disappear-off" class="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 hover:border-slate-700 text-[9px] text-slate-300 font-bold">Never</button>
+                </div>
+            </div>
+
+            <!-- MESSAGE INPUT PANEL -->
+            <form id="message-form" class="p-6 bg-slate-950 border-t border-slate-900 shrink-0 flex gap-4">
+                <input type="text" autocomplete="off" id="input-message" placeholder="TYPE SECURE ENCRYPTED MESSAGE..." class="flex-1 bg-slate-900/60 border border-slate-900 rounded-lg px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-emerald-900/80 font-mono text-xs focus:ring-1 focus:ring-emerald-900/40">
+                <button type="submit" class="bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-800 hover:border-emerald-700 text-emerald-400 font-bold uppercase px-6 py-3 rounded-lg transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.05)]">
+                    <i class="fa-solid fa-paper-plane"></i> Send
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <!-- TRUST VERIFICATION POPUP MODAL -->
+    <div id="modal-trust" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-lg max-w-sm w-full p-6 flex flex-col gap-6">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-emerald-400 font-bold uppercase tracking-wider text-xs flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> Trust Verification
+                </h3>
+                <button id="btn-close-modal" class="text-slate-500 hover:text-slate-300 transition text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex flex-col gap-4 text-[10px]">
+                <p class="text-slate-400 leading-relaxed text-center">
+                    To completely eliminate any chance of network-level Man-in-the-Middle (MitM) impersonation, verify your Short Authentication String (SAS).
+                </p>
+
+                <!-- SAS STRING DISPLAY -->
+                <div class="flex flex-col gap-2 items-center justify-center bg-slate-950 p-4 border border-slate-800 rounded-lg">
+                    <span class="text-[9px] uppercase tracking-widest text-slate-500">Short Authentication String</span>
+                    <span class="text-lg font-bold text-emerald-400 tracking-widest uppercase font-mono" id="sas-display">
+                        -
+                    </span>
+                    <span class="text-[8px] text-slate-500 italic text-center mt-1">Read this string aloud over a trusted channel or compare visually.</span>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-slate-500 uppercase">Peer's Identity Fingerprint:</label>
+                    <div id="peer-fingerprint-display" class="bg-slate-950 border border-slate-800 p-2 rounded text-[10px] text-slate-300 break-all select-all font-mono">
+                        -
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-2">
+                <button id="btn-mark-untrusted" class="flex-1 border border-red-800 hover:bg-red-950/20 text-red-400 font-bold uppercase py-2 rounded transition text-[10px]">
+                    Unverified
+                </button>
+                <button id="btn-mark-trusted" class="flex-1 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-800 text-emerald-400 font-bold uppercase py-2 rounded transition text-[10px]">
+                    Verify Trust
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLIENT LOGIC INJECTIONS -->
+    <script src="crypto.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

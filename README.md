@@ -1,37 +1,38 @@
 <div align="center">
 
-# 🔥 Phoenix Chronos
+# 👻 GhostLink
 
-### *The Open-Source Checkpoint & Replay Engine for Developers*
+### *God-Mode, Military-Grade Private Chat*
 
-*"Git tracks your code. Phoenix Chronos tracks your environment."*
+*"Git tracks your code. GhostLink tracks nothing — and that is its ultimate power."*
 
-[![GitHub Stars](https://img.shields.io/badge/GitHub-Stars-yellow?style=for-the-badge&logo=github)](https://github.com)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=for-the-badge)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Termux%20%7C%20macOS-green?style=for-the-badge)](https://github.com)
-[![Python](https://img.shields.io/badge/python-3.12+-blue?style=for-the-badge&logo=python)](https://python.org)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-green?style=for-the-badge)](https://github.com)
+[![WebCrypto API](https://img.shields.io/badge/WebCrypto-Native-orange?style=for-the-badge)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
+[![Node.js](https://img.shields.io/badge/node-v22+-blue?style=for-the-badge)](https://nodejs.org)
 
 ---
 
-**Every developer knows this nightmare:**
-*"Everything worked yesterday. Now, a dependency updated, an environment variable changed, or a config was overwritten, and the build is broken. I've spent 4 hours trying to get back to my working state."*
+**Every user knows the modern nightmare:**
+*"Every chat app wants my email, phone number, and contacts. Their databases leak, their servers get breached, and my private conversations are sold to the highest bidder."*
 
-**Phoenix Chronos solves this forever.** It takes zero-friction, lightweight development environment checkpoints, allowing you to restore your exact files, dependencies, environment variables, and git state in seconds.
+**GhostLink solves this forever.** Built on a zero-trust architecture, GhostLink operates completely in-memory, uses peer-to-peer WebRTC connections, and protects every packet with standard Double Ratchet end-to-end encryption. No accounts. No databases. No permanent identity.
 
-[🚀 Quick Start](#-quick-start) • [✨ Key Features](#-key-features) • [⚙️ Architecture](#️-architecture) • [📖 CLI Usage](#-cli-usage) • [🤝 Contributing](#-contributing)
+[⚡ Architecture Core](#-architecture-core) • [🚀 Quick Start](#-quick-start) • [🛡️ Trust Verification](#️-trust-verification) • [🧪 Testing](#-testing) • [📦 Hardened Policies](#-hardened-policies)
 
 </div>
 
 ---
 
-## ⚡ What does Chronos Track?
+## ⚡ Architecture Core
 
 ```
-📦 Phoenix Chronos Checkpoint
-├── 📁 Project Files (Excluding ignored build/venv artifacts)
-├── 📦 Package Dependencies (Pip, NPM, Cargo, Go)
-├── ⚙️ Environment Variables (PATH, GOROOT, JAVA_HOME, and custom rules)
-└── 🐙 Git Repository State (Commit hash, branch name, working tree status)
+📦 GhostLink Security Layers
+├── 🔐 Sovereign Keys (X25519 DH / Ed25519 Signatures generated locally)
+├── 🤝 Initial Handshake (X3DH-like Authenticated Key Exchange over WebSocket)
+├── 🔄 Ongoing Session (Double Ratchet DH + Symmetric KDF message-key rotation)
+├── 📦 Authenticated Encryption (AES-256-GCM AEAD — tampering is rejected natively)
+└── 📡 Signaling (Sealed-sender style routing using ephemeral session tokens)
 ```
 
 ---
@@ -40,199 +41,91 @@
 
 ### 1. Installation
 
-Install Phoenix Chronos directly from source:
+Install GhostLink and its lightweight, zero-persistence signaling dependencies:
 
 ```bash
-git clone https://github.com/devthedevil2321-create/phoenix-chronos.git
-cd phoenix-chronos
-pip install -e .
+git clone https://github.com/devthedevil2321-create/ghostlink.git
+cd ghostlink
+npm install
 ```
 
 ---
 
-### 2. Initialize Chronos in your project
+### 2. Launch the Signaling Server
 
-Run `chronos init` inside any directory to set up environment tracking. This creates a lightweight `.chronos` database and configuration file.
+Start the lightweight, zero-log WebSocket signaling server:
 
 ```bash
-$ chronos init
+npm start
 ```
 *Output:*
-> `Initialized empty Chronos repository in /path/to/project/.chronos`
+> `🔥 GhostLink Signaling Server running on port 3000`
+> `Visit http://localhost:3000 in your browser to start secure, private chats.`
 
 ---
 
-### 3. Create a Checkpoint
+### 3. Establish a Private Handshake
 
-Whenever your project is in a working state, take a snapshot!
-
-```bash
-$ chronos checkpoint -m "Working state with requests library added"
-```
-*Output:*
-> `Successfully created checkpoint: cp_20231024153022_b3d4f109`
+1. Open **two independent browser windows** at `http://localhost:3000` (representing Alice and Bob).
+2. On Alice's client, click **Generate Invitation** to craft a single-use handshake token.
+3. Copy the token and paste it into Bob's client under **Accept Friend's Code**.
+4. Click **Accept Invitation**.
+5. The clients will perform an **X3DH-like handshake** over the sealed-sender signaling server, automatically derive a byte-identical master secret, initialize the **Double Ratchet Engine**, and establish a direct **WebRTC DataChannel** in relay-only mode.
 
 ---
 
-### 4. Check Status
+## 🛡️ Trust Verification
 
-Chronos monitors files, environment variables, and packages in real-time, highlighting exact deviations from your last checkpoint.
+GhostLink handles trust verification out-of-band to completely eliminate Man-in-the-Middle (MitM) impersonation:
+
+1. Click **Verify Trust** at the top right of the active workspace.
+2. Compare the **Short Authentication String (SAS)** printed on both clients.
+3. If they match, click **Verify Trust** to pin the identity signature of your peer.
+
+---
+
+## ⚙️ Configuration & Hardened Defaults
+
+GhostLink is hardened at both the protocol and application layers:
+- **No Persistence**: No database ever touches message contents or signaling envelopes. State is 100% in-memory and wiped on exit.
+- **Relay-Only WebRTC**: Configured with `iceTransportPolicy: 'relay'` to prevent public IP leaks, routing exclusively via TURN relays.
+- **Disappearing Messages**: Features 1-minute, 5-minute, or customizable automatic local memory/DOM wipeout.
+- **Self-Destruct**: Clicking "Self-Destruct" instantly overwrites and purges private keys, active session states, local logs, and reloads to a clean, fresh state.
+- **Content Security Policy (CSP)**: Injected with strict headers to prevent inline JS execution, cross-site scripting (XSS), or unauthorized network calls.
+
+---
+
+## 🧪 Testing
+
+To run the automated cryptographic test suite and verify the integrity of the X25519 DH, HKDF-SHA256, Double Ratchet, and AES-256-GCM pipelines:
 
 ```bash
-$ chronos status
+npm test
 ```
-*Output:*
+
+*Expected Output:*
 ```text
-🔍 Phoenix Chronos - Dev Environment Status
-==========================================
-Latest Checkpoint: cp_20231024153022_b3d4f109 ("Working state with requests library added")
-Git State: branch=main commit=f4a2b91
-------------------------------------------
+🧪 Starting GhostLink Cryptographic & Protocol Tests...
 
-📁 File Status:
-  ~ [Modified]  src/main.py
-  + [Untracked] test_new_feature.py
+▶ Test 1: Key Generation...
+✓ Key Generation test passed successfully.
 
-📦 Package Status:
-  + [pip] pytest==7.4.3
+▶ Test 2: Ephemeral Diffie-Hellman Key Agreement...
+✓ X25519 DH Key Agreement passed successfully.
 
-⚙️ Environment Variables Status:
-  ~ PATH (Checkpoint: /usr/bin -> Local: /tmp/untrusted/bin:/usr/bin)
+▶ Test 3: HKDF KDF Chain Derivation...
+✓ HKDF KDF Chain Derivation passed successfully.
+
+▶ Test 4: Double Ratchet State Machine & Rotations...
+✓ Double Ratchet encryption & decryption passed successfully.
+✓ Double Ratchet symmetric KDF-chain rotation passed successfully.
+
+▶ Test 5: Cryptographic Tamper & Integrity Rejection...
+✓ Cryptographic Tamper Rejection verified successfully.
+
+🏁 ALL GHOSTLINK PROTOCOL & CRYPTO TESTS PASSED SUCCESSFULLY! 🚀
 ```
 
 ---
 
-### 5. Compare History
-
-See what changed between two different checkpoints:
-
-```bash
-$ chronos diff cp_20231024153022_b3d4f109 cp_20231024164511_a9f23d41
-```
-
----
-
-### 6. Replay & Restore
-
-Did a dependency break your app? Easily restore your exact files to a previous checkpoint. Chronos will automatically output a **Restore Plan** to guide your package and environment alignment!
-
-```bash
-$ chronos restore cp_20231024153022_b3d4f109
-```
-*Output:*
-```text
-📋 PHOENIX CHRONOS RESTORE PLAN
-================================
-Target Checkpoint: cp_20231024153022_b3d4f109
-Message:           "Working state with requests library added"
-Timestamp:         2023-10-24 15:30:22
---------------------------------
-
-📁 Files to update:
-  ~ [Modified] src/main.py
-  - [Delete]   test_new_feature.py
-
-📦 Package Alignment Actions Required:
-  [Install] pip: requests==2.31.0
-
-⚙️ Environment Variables Alignment Required:
-  [Update] PATH (/tmp/untrusted/bin:/usr/bin -> /usr/bin)
-
-Successfully restored workspace files to checkpoint: cp_20231024153022_b3d4f109
-Please align your system packages and environment variables as printed above.
-```
-
----
-
-## 🛠️ Configuration (`.chronos/config.json`)
-
-Phoenix Chronos is highly customizable. After running `chronos init`, you can customize `.chronos/config.json`:
-
-```json
-{
-    "include": [
-        "**/*"
-    ],
-    "exclude": [
-        "**/.git/**",
-        "**/.chronos/**",
-        "**/node_modules/**",
-        "**/__pycache__/**",
-        "**/*.pyc",
-        "**/.venv/**"
-    ],
-    "environment_variables": [
-        "PATH",
-        "PYTHONPATH",
-        "NODE_ENV"
-    ],
-    "commands": {
-        "pre_checkpoint": "pytest tests/",
-        "post_checkpoint": "echo 'Checkpoint taken successfully!'",
-        "pre_restore": "",
-        "post_restore": ""
-    }
-}
-```
-
-- **pre_checkpoint**: Run verification commands (e.g. tests) that must pass before taking a checkpoint.
-- **post_checkpoint**: Fire off custom webhooks or log events.
-
----
-
-## 🏗️ Architecture
-
-```
-                       ┌─────────────────────────┐
-                       │       Chronos CLI       │
-                       └────────────┬────────────┘
-                                    │
-                                    ▼
-                       ┌─────────────────────────┐
-                       │     Restore Planner     │
-                       └────────────┬────────────┘
-                                    │
-       ┌────────────────────────────┼────────────────────────────┐
-       ▼                            ▼                            ▼
-┌──────────────┐             ┌──────────────┐             ┌──────────────┐
-│  SQLite DB   │             │ Snapshot Zip │             │ Env Adapters │
-│ (Metadata)   │             │  (Archives)  │             │ (Pip/NPM/Go) │
-└──────────────┘             └──────────────┘             └──────────────┘
-```
-
----
-
-## 🕒 Timeline
-
-Easily browse your development checkpoints:
-
-```bash
-$ chronos timeline
-```
-```text
-🕒 Phoenix Chronos - Development History Timeline
-==================================================
- 🔥 (latest)  ID: cp_20231024164511_a9f23d41
- │   Time:    2023-10-24 16:45:11
- │   Git:      [main] (f4a2b91)
- │   Message: Broken experiment with experimental packages
- │
- ●  ID: cp_20231024153022_b3d4f109
-     Time:    2023-10-24 15:30:22
-     Git:      [main] (e1c9a82)
-     Message: Working state with requests library added
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are extremely welcome! If you'd like to help build the future of reproducible development environments, please feel free to submit issues, pull requests, or suggestions.
-
-Let's make local development reliable and fun! 🚀
-
----
-
-## 📄 License
-
-Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
+Made with ❤️ by Dev
